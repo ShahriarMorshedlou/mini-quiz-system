@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: mini-quiz-system
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mini_quiz
+    username: postgres
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
