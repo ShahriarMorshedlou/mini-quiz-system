@@ -26,7 +26,7 @@ public class Choice {
     @JoinColumn(name = "question_id")
     private Question question;
 
-    @OneToMany(mappedBy = "selectedChoice")
+    @OneToMany(mappedBy = "choice")
     private List<Answer> answers;
 
     public Choice(String text, boolean correct) {

@@ -1,6 +1,7 @@
 package com.shah.mini_quiz_system.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,9 +20,9 @@ public class Quiz {
 
     private String title;
 
-    private String description; // duration in minutes
+    private String description;
 
-    private Integer duration;
+    private Integer duration; // duration in minutes
 
     @Enumerated(EnumType.STRING)
     private QuizStatus status;
@@ -34,6 +35,7 @@ public class Quiz {
     private List<Submission> submissions;
 
 
+    @Builder
     public Quiz(String title, String description, Integer duration, QuizStatus status) {
         this.title = title;
         this.description = description;
