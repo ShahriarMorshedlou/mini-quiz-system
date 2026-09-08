@@ -8,6 +8,9 @@ import com.shah.mini_quiz_system.repoditory.QuizRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class QuizService {
@@ -31,6 +34,14 @@ public class QuizService {
         Quiz savedQuiz = quizRepository.save(quiz);
 
         return quizMapper.toResponse(savedQuiz);
+
+    }
+
+    public List<QuizResponse> getAllQuizzes(){
+
+        List<Quiz> quizList = quizRepository.findAll();
+
+        return quizMapper.toResponseList(quizList);
 
     }
 }
