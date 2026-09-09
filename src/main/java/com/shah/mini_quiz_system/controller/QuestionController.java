@@ -6,6 +6,7 @@ import com.shah.mini_quiz_system.service.QuestionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -33,7 +34,7 @@ public class QuestionController {
             description = "Create question successfully"
     )
     @PostMapping
-    public ResponseEntity<QuestionResponse> createQuestion (
+    public ResponseEntity<QuestionResponse> createQuestion(
             @RequestBody
             @Valid
             QuestionRequest request
@@ -52,11 +53,30 @@ public class QuestionController {
             description = "Get all question successfully"
     )
     @GetMapping
-    public ResponseEntity<List<QuestionResponse>> getAllQuestions(){
+    public ResponseEntity<List<QuestionResponse>> getAllQuestions() {
 
         return ResponseEntity
                 .ok()
                 .body(questionService.getAllQuestions());
+    }
+
+
+    @Operation(
+            summary = "Get question by id"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Get question by id successfully"
+    )
+    @GetMapping("/{id}")
+    public ResponseEntity<QuestionResponse> getQuestionById(
+            @PathVariable
+            @Positive
+            Long id) {
+
+        return ResponseEntity
+                .ok()
+                .body(questionService.getQuestionById(id));
     }
 
 

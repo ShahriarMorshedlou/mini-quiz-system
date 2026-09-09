@@ -4,6 +4,7 @@ import com.shah.mini_quiz_system.domain.Question;
 import com.shah.mini_quiz_system.dto.request.QuestionRequest;
 import com.shah.mini_quiz_system.dto.response.QuestionResponse;
 
+import com.shah.mini_quiz_system.exception.QuestionNotFoundException;
 import com.shah.mini_quiz_system.mapper.QuestionMapper;
 import com.shah.mini_quiz_system.repoditory.QuestionRepository;
 import jakarta.transaction.Transactional;
@@ -40,6 +41,15 @@ public class QuestionService {
         List<Question> questionList = questionRepository.findAll();
 
         return questionMapper.toResponseList(questionList);
+
+    }
+
+    public QuestionResponse getQuestionById(Long id) {
+
+        Question question = questionRepository.findById(id)
+                .orElseThrow(() -> new QuestionNotFoundException("Not Found Question With Id: " + id));
+
+        return questionMapper.toResponse(question);
 
     }
 

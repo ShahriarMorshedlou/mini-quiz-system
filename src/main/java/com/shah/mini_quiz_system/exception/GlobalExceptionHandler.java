@@ -106,4 +106,20 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(errorResponse);
     }
+
+    @ExceptionHandler(QuestionNotFoundException.class)
+    ResponseEntity<ErrorResponse> handleQuestionNotFoundException (QuestionNotFoundException ex){
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                404,
+                ex.getMessage(),
+                null
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(errorResponse);
+    }
+
+
 }
