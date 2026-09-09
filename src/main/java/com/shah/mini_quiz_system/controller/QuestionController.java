@@ -80,4 +80,25 @@ public class QuestionController {
     }
 
 
+    @Operation(
+            summary = "Update question"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Question updated successfully"
+    )
+    @PutMapping("/{id}")
+    public ResponseEntity<QuestionResponse> updateQuestion(
+            @RequestBody
+            @Valid
+            QuestionRequest request,
+
+            @PathVariable
+            @Positive
+            Long id
+    ) {
+        return ResponseEntity
+                .ok()
+                .body(questionService.updateQuestion(request, id));
+    }
 }

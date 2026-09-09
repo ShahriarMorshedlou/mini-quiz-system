@@ -53,5 +53,20 @@ public class QuestionService {
 
     }
 
+    @Transactional
+    public QuestionResponse updateQuestion(QuestionRequest request, Long id) {
+
+        Question question = questionRepository.findById(id)
+                .orElseThrow(() ->
+                        new QuestionNotFoundException(
+                                "Not Found Question With Id: " + id
+                        ));
+
+        question.setText(request.getText());
+        question.setScore(request.getScore());
+
+        return questionMapper.toResponse(question);
+    }
+
 
 }
