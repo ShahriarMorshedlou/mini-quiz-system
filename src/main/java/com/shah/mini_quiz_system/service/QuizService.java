@@ -69,4 +69,15 @@ public class QuizService {
 
         return quizMapper.toResponse(quiz);
     }
+
+    @Transactional
+    public void deleteQuizById(Long id) {
+
+
+        if (!quizRepository.existsById(id)) {
+            throw new QuizNotFoundException("Quiz Not Found With Id: " + id);
+        }
+        quizRepository.deleteById(id);
+    }
+
 }

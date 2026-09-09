@@ -102,4 +102,24 @@ public class QuizController {
                 .ok()
                 .body(quizService.updateQuiz(request, id));
     }
+
+    @Operation(
+            summary = "Delete quiz"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Quiz Deleted successfully"
+    )
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteQuizById(
+            @PathVariable
+            @Positive
+            Long id) {
+
+        quizService.deleteQuizById(id);
+
+        return ResponseEntity
+                .noContent()
+                .build();
+    }
 }
