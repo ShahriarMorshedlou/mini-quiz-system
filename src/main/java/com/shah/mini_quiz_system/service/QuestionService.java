@@ -68,5 +68,17 @@ public class QuestionService {
         return questionMapper.toResponse(question);
     }
 
+    @Transactional
+    public void deleteQuestionById(Long id) {
+
+        if (!questionRepository.existsById(id)) {
+            throw new QuestionNotFoundException(
+                    "Not Found Question With Id: " + id
+            );
+        }
+
+        questionRepository.deleteById(id);
+    }
+
 
 }

@@ -101,4 +101,24 @@ public class QuestionController {
                 .ok()
                 .body(questionService.updateQuestion(request, id));
     }
+
+    @Operation(
+            summary = "Delete question"
+    )
+    @ApiResponse(
+            responseCode = "204",
+            description = "Question deleted successfully"
+    )
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteQuestionById(
+            @PathVariable
+            @Positive
+            Long id
+    ) {
+        questionService.deleteQuestionById(id);
+
+        return ResponseEntity
+                .noContent()
+                .build();
+    }
 }
