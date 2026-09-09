@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.shah.mini_quiz_system.dto.response.ErrorResponse;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +38,44 @@ public class GlobalExceptionHandler {
                 .body(errorResponse);
 
     }
+
+
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    ResponseEntity<ErrorResponse> handleValidationException(
+            HandlerMethodValidationException ex
+    ) {
+
+        Map<String, String> errors = new HashMap<>();
+
+        ex.getParameterValidationResults()
+                .forEach(result -> {
+
+                    String parameterName = result.getMethodParameter()
+                            .getParameterName();
+
+                    result.getResolvableErrors()
+                            .forEach(error ->
+                                    errors.put(
+                                            parameterName,
+                                            error.getDefaultMessage()
+                                    )
+                            );
+                });
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                400,
+                "Validation failed",
+                errors
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponse);
+    }
+
+
+
+
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     ResponseEntity<ErrorResponse> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {

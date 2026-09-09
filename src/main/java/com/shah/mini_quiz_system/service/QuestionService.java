@@ -1,4 +1,35 @@
 package com.shah.mini_quiz_system.service;
 
+import com.shah.mini_quiz_system.domain.Question;
+import com.shah.mini_quiz_system.dto.request.QuestionRequest;
+import com.shah.mini_quiz_system.dto.response.QuestionResponse;
+
+import com.shah.mini_quiz_system.mapper.QuestionMapper;
+import com.shah.mini_quiz_system.repoditory.QuestionRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
+
+@Service
 public class QuestionService {
+    private final QuestionRepository questionRepository;
+    private final QuestionMapper questionMapper;
+
+    public QuestionService(QuestionRepository questionRepository, QuestionMapper questionMapper) {
+        this.questionRepository = questionRepository;
+        this.questionMapper = questionMapper;
+    }
+
+    @Transactional
+    public QuestionResponse createQuestion(QuestionRequest request){
+
+        Question question = new Question(
+                request.getText(),
+                request.getScore()
+        );
+
+        Question savedQuestion = questionRepository.save(question);
+
+       return questionMapper.toResponse(savedQuestion);
+
+    }
 }
