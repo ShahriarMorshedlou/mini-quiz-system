@@ -54,11 +54,29 @@ public class QuizController {
 
     )
     @GetMapping
-    public ResponseEntity<List<QuizResponse>> getAllQuizzes(){
+    public ResponseEntity<List<QuizResponse>> getAllQuizzes() {
 
         return ResponseEntity
                 .ok()
                 .body(quizService.getAllQuizzes());
 
+    }
+
+    @Operation(
+            summary = "Get quiz by ID"
+
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Quiz retrieved successfully")
+
+    @GetMapping("/{id}")
+    public ResponseEntity<QuizResponse> getQuizById(
+            @PathVariable
+            Long id
+    ) {
+        return ResponseEntity
+                .ok()
+                .body(quizService.getQuizById(id));
     }
 }

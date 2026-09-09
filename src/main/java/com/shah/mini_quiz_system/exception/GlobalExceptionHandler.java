@@ -53,4 +53,18 @@ public class GlobalExceptionHandler {
 
 
     }
+
+    @ExceptionHandler(QuizNotFoundException.class)
+    ResponseEntity<ErrorResponse> handleQuizNotFoundException (QuizNotFoundException ex){
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                404,
+                ex.getMessage(),
+                null
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponse);
+    }
 }
