@@ -9,10 +9,9 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/question")
@@ -42,6 +41,22 @@ public class QuestionController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(questionService.createQuestion(request));
+    }
+
+
+    @Operation(
+            summary = "Get all questions"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Get all question successfully"
+    )
+    @GetMapping
+    public ResponseEntity<List<QuestionResponse>> getAllQuestions(){
+
+        return ResponseEntity
+                .ok()
+                .body(questionService.getAllQuestions());
     }
 
 

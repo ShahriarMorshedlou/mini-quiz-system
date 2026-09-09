@@ -9,6 +9,8 @@ import com.shah.mini_quiz_system.repoditory.QuestionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class QuestionService {
     private final QuestionRepository questionRepository;
@@ -20,7 +22,7 @@ public class QuestionService {
     }
 
     @Transactional
-    public QuestionResponse createQuestion(QuestionRequest request){
+    public QuestionResponse createQuestion(QuestionRequest request) {
 
         Question question = new Question(
                 request.getText(),
@@ -29,7 +31,17 @@ public class QuestionService {
 
         Question savedQuestion = questionRepository.save(question);
 
-       return questionMapper.toResponse(savedQuestion);
+        return questionMapper.toResponse(savedQuestion);
 
     }
+
+    public List<QuestionResponse> getAllQuestions() {
+
+        List<Question> questionList = questionRepository.findAll();
+
+        return questionMapper.toResponseList(questionList);
+
+    }
+
+
 }
