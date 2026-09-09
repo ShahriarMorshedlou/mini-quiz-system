@@ -53,4 +53,20 @@ public class QuizService {
 
         return quizMapper.toResponse(quiz);
     }
+
+
+    @Transactional
+    public QuizResponse updateQuiz(QuizRequest request, Long id) {
+
+        Quiz quiz = quizRepository.findById(id)
+                .orElseThrow(() -> new QuizNotFoundException("Quiz Not Found With Id: " + id));
+
+
+        quiz.setTitle(request.getTitle());
+        quiz.setDescription(request.getDescription());
+        quiz.setDuration(request.getDuration());
+        quiz.setStatus(request.getStatus());
+
+        return quizMapper.toResponse(quiz);
+    }
 }
