@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class SubmissionService {
@@ -46,5 +47,12 @@ public class SubmissionService {
         Submission savedSubmission = submissionRepository.save(submission);
 
         return submissionMapper.toResponse(savedSubmission);
+    }
+
+    public List<SubmissionResponse> getAllSubmissions() {
+
+        List<Submission> submissionList = submissionRepository.findAll();
+
+        return submissionMapper.toResponseList(submissionList);
     }
 }
