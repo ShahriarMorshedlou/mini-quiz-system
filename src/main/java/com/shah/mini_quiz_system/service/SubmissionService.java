@@ -79,4 +79,27 @@ public class SubmissionService {
 
         submissionRepository.deleteById(id);
     }
+
+    @Transactional
+    public SubmissionResponse updateSubmission(
+            SubmissionRequest request,
+            Long id
+    ) {
+
+        Submission submission = submissionRepository.findById(id)
+                .orElseThrow(() ->
+                        new SubmissionNotFoundException(
+                                "Not Found Submission With Id: " + id
+                        ));
+
+        Quiz quiz = quizRepository.findById(request.getQuizId())
+                .orElseThrow(() ->
+                        new QuizNotFoundException(
+                                "Not Found Quiz With Id: " + request.getQuizId()
+                        ));
+
+        submission.setQuiz(quiz);
+
+        return submissionMapper.toResponse(submission);
+    }
 }

@@ -87,5 +87,22 @@ public class SubmissionController {
         submissionService.deleteSubmissionById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    @Operation(
+            summary = "Update submission"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Submission updated successfully"
+    )
+    public ResponseEntity<SubmissionResponse> updateSubmission(
+            @RequestBody @Valid SubmissionRequest request,
+            @PathVariable @Positive Long id
+    ) {
+        return ResponseEntity
+                .ok()
+                .body(submissionService.updateSubmission(request, id));
+    }
 }
 
