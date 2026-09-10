@@ -72,5 +72,20 @@ public class SubmissionController {
                 .ok()
                 .body(submissionService.getSubmissionById(id));
     }
+
+    @DeleteMapping("/{id}")
+    @Operation(
+            summary = "Delete submission by id"
+    )
+    @ApiResponse(
+            responseCode = "204",
+            description = "Submission deleted successfully"
+    )
+    public ResponseEntity<Void> deleteSubmissionById(
+            @PathVariable @Positive Long id
+    ) {
+        submissionService.deleteSubmissionById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
 

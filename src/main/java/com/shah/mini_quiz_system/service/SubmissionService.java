@@ -67,4 +67,16 @@ public class SubmissionService {
 
         return submissionMapper.toResponse(submission);
     }
+
+    @Transactional
+    public void deleteSubmissionById(Long id) {
+
+        if (!submissionRepository.existsById(id)) {
+            throw new SubmissionNotFoundException(
+                    "Not Found Submission With Id: " + id
+            );
+        }
+
+        submissionRepository.deleteById(id);
+    }
 }
