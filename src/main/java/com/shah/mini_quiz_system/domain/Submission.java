@@ -34,4 +34,23 @@ public class Submission {
     @OneToMany(mappedBy = "submission")
     private List<Answer>answers;
 
+    public void setQuiz(Quiz quiz) {
+        this.quiz = quiz;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
+    }
 }
