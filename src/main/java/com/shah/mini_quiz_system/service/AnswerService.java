@@ -84,4 +84,16 @@ public class AnswerService {
         return answerMapper.toResponseList(answerList);
     }
 
+    @Transactional
+    public void deleteAnswerById(Long id) {
+
+        if (!answerRepository.existsById(id)) {
+            throw new AnswerNotFoundException(
+                    "Not Found Answer With Id: " + id
+            );
+        }
+
+        answerRepository.deleteById(id);
+    }
+
 }

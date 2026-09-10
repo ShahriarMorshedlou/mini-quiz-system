@@ -76,4 +76,21 @@ public class AnswerController {
                 .ok()
                 .body(answerService.getAllAnswers());
     }
+
+    @DeleteMapping("/{id}")
+    @Operation(
+            summary = "Delete answer by id"
+    )
+    @ApiResponse(
+            responseCode = "204",
+            description = "Answer deleted successfully"
+    )
+    public ResponseEntity<Void> deleteAnswerById(
+            @PathVariable
+            @Positive
+            Long id
+    ) {
+        answerService.deleteAnswerById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
