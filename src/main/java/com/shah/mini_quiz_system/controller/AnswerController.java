@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/answer")
@@ -59,5 +61,19 @@ public class AnswerController {
         return ResponseEntity
                 .ok()
                 .body(answerService.getAnswerById(id));
+    }
+
+    @GetMapping
+    @Operation(
+            summary = "Get all answers"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Answers retrieved successfully"
+    )
+    public ResponseEntity<List<AnswerResponse>> getAllAnswers() {
+        return ResponseEntity
+                .ok()
+                .body(answerService.getAllAnswers());
     }
 }

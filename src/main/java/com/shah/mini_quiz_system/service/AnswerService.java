@@ -18,6 +18,8 @@ import com.shah.mini_quiz_system.repoditory.SubmissionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AnswerService {
 
@@ -74,4 +76,12 @@ public class AnswerService {
 
         return answerMapper.toResponse(answer);
     }
+
+    public List<AnswerResponse> getAllAnswers() {
+
+        List<Answer> answerList = answerRepository.findAll();
+
+        return answerMapper.toResponseList(answerList);
+    }
+
 }
