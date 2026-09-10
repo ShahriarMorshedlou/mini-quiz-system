@@ -6,6 +6,7 @@ import com.shah.mini_quiz_system.domain.Question;
 import com.shah.mini_quiz_system.domain.Submission;
 import com.shah.mini_quiz_system.dto.request.AnswerRequest;
 import com.shah.mini_quiz_system.dto.response.AnswerResponse;
+import com.shah.mini_quiz_system.exception.AnswerNotFoundException;
 import com.shah.mini_quiz_system.exception.ChoiceNotFoundException;
 import com.shah.mini_quiz_system.exception.QuestionNotFoundException;
 import com.shah.mini_quiz_system.exception.SubmissionNotFoundException;
@@ -61,5 +62,16 @@ public class AnswerService {
         Answer savedAnswer = answerRepository.save(answer);
 
         return answerMapper.toResponse(savedAnswer);
+    }
+
+    public AnswerResponse getAnswerById(Long id) {
+
+        Answer answer = answerRepository.findById(id)
+                .orElseThrow(() ->
+                        new AnswerNotFoundException(
+                                "Not Found Answer With Id: " + id
+                        ));
+
+        return answerMapper.toResponse(answer);
     }
 }

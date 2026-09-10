@@ -145,5 +145,18 @@ public class GlobalExceptionHandler {
                 .body(errorResponse);
     }
 
+    @ExceptionHandler(AnswerNotFoundException.class)
+    ResponseEntity<ErrorResponse> handleAnswerNotFoundException(AnswerNotFoundException ex){
+        ErrorResponse errorResponse = new ErrorResponse(
+                404,
+                ex.getMessage(),
+                null
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(errorResponse);
+    }
+
 
 }
