@@ -1,6 +1,7 @@
 package com.shah.mini_quiz_system.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,4 +30,9 @@ public class Answer {
     @JoinColumn(name = "submission_id")
     private Submission submission;
 
+    public Answer(Choice choice, Question question, Submission submission) {
+        this.choice = choice;
+        this.question = question;
+        this.submission = submission;
+    }
 }

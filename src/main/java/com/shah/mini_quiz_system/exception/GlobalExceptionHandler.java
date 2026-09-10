@@ -121,5 +121,29 @@ public class GlobalExceptionHandler {
                 .body(errorResponse);
     }
 
+    @ExceptionHandler(ChoiceNotFoundException.class)
+    ResponseEntity<ErrorResponse> handleChoiceNotFoundException(ChoiceNotFoundException ex){
+        ErrorResponse errorResponse = new ErrorResponse(
+                404,
+                ex.getMessage(),
+                null
+        );
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(SubmissionNotFoundException.class)
+    ResponseEntity<ErrorResponse> handleSubmissionNotFoundException(SubmissionNotFoundException ex){
+        ErrorResponse errorResponse = new ErrorResponse(
+                404,
+                ex.getMessage(),
+                null
+        );
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(errorResponse);
+    }
+
 
 }

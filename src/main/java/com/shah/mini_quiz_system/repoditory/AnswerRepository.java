@@ -1,4 +1,9 @@
 package com.shah.mini_quiz_system.repoditory;
 
-public interface AnswerRepository {
+import com.shah.mini_quiz_system.domain.Answer;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface AnswerRepository extends JpaRepository<Answer,Long> {
 }
