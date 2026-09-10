@@ -41,4 +41,8 @@ public class Choice {
     public void setQuestion(Question question) {
         this.question = question;
     }
+
+    public void setCorrect(boolean correct) {
+        this.correct = correct;
+    }
 }

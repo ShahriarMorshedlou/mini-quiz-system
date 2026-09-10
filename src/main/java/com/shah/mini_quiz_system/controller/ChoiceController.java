@@ -88,5 +88,22 @@ public class ChoiceController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{id}")
+    @Operation(
+            summary = "Update choice"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Choice updated successfully"
+    )
+    public ResponseEntity<ChoiceResponse> updateChoice(
+            @RequestBody @Valid ChoiceRequest request,
+            @PathVariable @Positive Long id
+    ) {
+        return ResponseEntity
+                .ok()
+                .body(choiceService.updateChoice(request, id));
+    }
+
 
 }

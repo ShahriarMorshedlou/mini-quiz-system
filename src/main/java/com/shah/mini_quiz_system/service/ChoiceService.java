@@ -79,4 +79,26 @@ public class ChoiceService {
         choiceRepository.deleteById(id);
     }
 
+    @Transactional
+    public ChoiceResponse updateChoice(ChoiceRequest request, Long id) {
+
+        Choice choice = choiceRepository.findById(id)
+                .orElseThrow(() ->
+                        new ChoiceNotFoundException(
+                                "Not Found Choice With Id: " + id
+                        ));
+
+        Question question = questionRepository.findById(request.getQuestionId())
+                .orElseThrow(() ->
+                        new QuestionNotFoundException(
+                                "Not Found Question With Id: " + request.getQuestionId()
+                        ));
+
+        choice.setText(request.getText());
+        choice.setCorrect(request.isCorrect());
+        choice.setQuestion(question);
+
+        return choiceMapper.toResponse(choice);
+    }
+
 }
