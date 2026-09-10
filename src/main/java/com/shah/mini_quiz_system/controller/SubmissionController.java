@@ -7,6 +7,7 @@ import com.shah.mini_quiz_system.service.SubmissionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -54,6 +55,22 @@ public class SubmissionController {
         return ResponseEntity
                 .ok()
                 .body(submissionService.getAllSubmissions());
+    }
+
+    @GetMapping("/{id}")
+    @Operation(
+            summary = "Get submission by id"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Submission found successfully"
+    )
+    public ResponseEntity<SubmissionResponse> getSubmissionById(
+            @PathVariable @Positive Long id
+    ) {
+        return ResponseEntity
+                .ok()
+                .body(submissionService.getSubmissionById(id));
     }
 }
 

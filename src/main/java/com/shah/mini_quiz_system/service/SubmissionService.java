@@ -5,6 +5,7 @@ import com.shah.mini_quiz_system.domain.Submission;
 import com.shah.mini_quiz_system.dto.request.SubmissionRequest;
 import com.shah.mini_quiz_system.dto.response.SubmissionResponse;
 import com.shah.mini_quiz_system.exception.QuizNotFoundException;
+import com.shah.mini_quiz_system.exception.SubmissionNotFoundException;
 import com.shah.mini_quiz_system.mapper.SubmissionMapper;
 import com.shah.mini_quiz_system.repoditory.QuizRepository;
 import com.shah.mini_quiz_system.repoditory.SubmissionRepository;
@@ -54,5 +55,16 @@ public class SubmissionService {
         List<Submission> submissionList = submissionRepository.findAll();
 
         return submissionMapper.toResponseList(submissionList);
+    }
+
+    public SubmissionResponse getSubmissionById(Long id) {
+
+        Submission submission = submissionRepository.findById(id)
+                .orElseThrow(() ->
+                        new SubmissionNotFoundException(
+                                "Not Found Submission With Id: " + id
+                        ));
+
+        return submissionMapper.toResponse(submission);
     }
 }
