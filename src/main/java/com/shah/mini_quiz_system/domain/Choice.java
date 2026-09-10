@@ -37,4 +37,8 @@ public class Choice {
     public void setText(String text) {
         this.text = text;
     }
+
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
 }
