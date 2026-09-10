@@ -67,4 +67,16 @@ public class ChoiceService {
         return choiceMapper.toResponse(choice);
     }
 
+    @Transactional
+    public void deleteChoiceById(Long id) {
+
+        if (!choiceRepository.existsById(id)) {
+            throw new ChoiceNotFoundException(
+                    "Not Found Choice With Id: " + id
+            );
+        }
+
+        choiceRepository.deleteById(id);
+    }
+
 }

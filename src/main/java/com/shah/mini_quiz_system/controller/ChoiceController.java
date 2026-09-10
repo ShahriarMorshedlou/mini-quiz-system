@@ -73,5 +73,20 @@ public class ChoiceController {
                 .body(choiceService.getChoiceById(id));
     }
 
+    @DeleteMapping("/{id}")
+    @Operation(
+            summary = "Delete choice by id"
+    )
+    @ApiResponse(
+            responseCode = "204",
+            description = "Choice deleted successfully"
+    )
+    public ResponseEntity<Void> deleteChoiceById(
+            @PathVariable @Positive Long id
+    ) {
+        choiceService.deleteChoiceById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
