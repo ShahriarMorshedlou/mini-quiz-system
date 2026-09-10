@@ -5,6 +5,7 @@ import com.shah.mini_quiz_system.domain.Question;
 import com.shah.mini_quiz_system.dto.request.ChoiceRequest;
 import com.shah.mini_quiz_system.dto.response.ChoiceResponse;
 import com.shah.mini_quiz_system.dto.response.QuestionResponse;
+import com.shah.mini_quiz_system.exception.ChoiceNotFoundException;
 import com.shah.mini_quiz_system.exception.QuestionNotFoundException;
 import com.shah.mini_quiz_system.mapper.ChoiceMapper;
 import com.shah.mini_quiz_system.repoditory.ChoiceRepository;
@@ -55,5 +56,15 @@ public class ChoiceService {
         return choiceMapper.toResponseList(choiceList);
     }
 
+    public ChoiceResponse getChoiceById(Long id) {
+
+        Choice choice = choiceRepository.findById(id)
+                .orElseThrow(() ->
+                        new ChoiceNotFoundException(
+                                "Not Found Choice With Id: " + id
+                        ));
+
+        return choiceMapper.toResponse(choice);
+    }
 
 }

@@ -7,6 +7,7 @@ import com.shah.mini_quiz_system.service.ChoiceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -54,6 +55,22 @@ public class ChoiceController {
         return ResponseEntity
                 .ok()
                 .body(choiceService.getAllChoices());
+    }
+
+    @GetMapping("/{id}")
+    @Operation(
+            summary = "Get choice by id"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Choice found successfully"
+    )
+    public ResponseEntity<ChoiceResponse> getChoiceById(
+            @PathVariable @Positive Long id
+    ) {
+        return ResponseEntity
+                .ok()
+                .body(choiceService.getChoiceById(id));
     }
 
 
