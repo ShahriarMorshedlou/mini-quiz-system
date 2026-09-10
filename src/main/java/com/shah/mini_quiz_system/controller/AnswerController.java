@@ -93,4 +93,26 @@ public class AnswerController {
         answerService.deleteAnswerById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    @Operation(
+            summary = "Update answer"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Answer updated successfully"
+    )
+    public ResponseEntity<AnswerResponse> updateAnswer(
+            @RequestBody
+            @Valid
+            AnswerRequest request,
+
+            @PathVariable
+            @Positive
+            Long id
+    ) {
+        return ResponseEntity
+                .ok()
+                .body(answerService.updateAnswer(request, id));
+    }
 }

@@ -96,4 +96,38 @@ public class AnswerService {
         answerRepository.deleteById(id);
     }
 
+    @Transactional
+    public AnswerResponse updateAnswer(AnswerRequest request, Long id) {
+
+        Answer answer = answerRepository.findById(id)
+                .orElseThrow(() ->
+                        new AnswerNotFoundException(
+                                "Not Found Answer With Id: " + id
+                        ));
+
+        Choice choice = choiceRepository.findById(request.getChoiceId())
+                .orElseThrow(() ->
+                        new ChoiceNotFoundException(
+                                "Not Found Choice With Id: " + request.getChoiceId()
+                        ));
+
+        Question question = questionRepository.findById(request.getQuestionId())
+                .orElseThrow(() ->
+                        new QuestionNotFoundException(
+                                "Not Found Question With Id: " + request.getQuestionId()
+                        ));
+
+        Submission submission = submissionRepository.findById(request.getSubmissionId())
+                .orElseThrow(() ->
+                        new SubmissionNotFoundException(
+                                "Not Found Submission With Id: " + request.getSubmissionId()
+                        ));
+
+        answer.setChoice(choice);
+        answer.setQuestion(question);
+        answer.setSubmission(submission);
+
+        return answerMapper.toResponse(answer);
+    }
+
 }

@@ -35,4 +35,16 @@ public class Answer {
         this.question = question;
         this.submission = submission;
     }
+
+    public void setChoice(Choice choice) {
+        this.choice = choice;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
+
+    public void setSubmission(Submission submission) {
+        this.submission = submission;
+    }
 }
