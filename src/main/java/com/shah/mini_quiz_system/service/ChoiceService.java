@@ -12,6 +12,8 @@ import com.shah.mini_quiz_system.repoditory.QuestionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ChoiceService {
 
@@ -45,4 +47,13 @@ public class ChoiceService {
 
         return choiceMapper.toResponse(savedChoice);
     }
+
+    public List<ChoiceResponse> getAllChoices() {
+
+        List<Choice> choiceList = choiceRepository.findAll();
+
+        return choiceMapper.toResponseList(choiceList);
+    }
+
+
 }
