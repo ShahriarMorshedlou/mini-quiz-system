@@ -2,9 +2,12 @@ package com.shah.mini_quiz_system.controller;
 
 
 import com.shah.mini_quiz_system.domain.Quiz;
+import com.shah.mini_quiz_system.domain.Submission;
 import com.shah.mini_quiz_system.dto.request.QuizRequest;
 import com.shah.mini_quiz_system.dto.response.QuizResponse;
+import com.shah.mini_quiz_system.dto.response.SubmissionResponse;
 import com.shah.mini_quiz_system.service.QuizService;
+import com.shah.mini_quiz_system.service.SubmissionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
@@ -22,9 +25,11 @@ import java.util.List;
 public class QuizController {
 
     private final QuizService quizService;
+    private final SubmissionService submissionService;
 
-    public QuizController(QuizService quizService) {
+    public QuizController(QuizService quizService, SubmissionService submissionService) {
         this.quizService = quizService;
+        this.submissionService = submissionService;
     }
 
     @Operation(
@@ -135,5 +140,14 @@ public class QuizController {
         return ResponseEntity
                 .ok()
                 .body(quizService.publishQuiz(id));
+    }
+
+    @PostMapping("/{quizId}/submissions")
+    public ResponseEntity<SubmissionResponse> startQuiz(
+            @PathVariable @Positive Long quizId) {
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(submissionService.startQuiz(quizId));
     }
 }

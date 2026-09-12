@@ -1,9 +1,11 @@
 package com.shah.mini_quiz_system.service;
 
 import com.shah.mini_quiz_system.domain.Quiz;
+import com.shah.mini_quiz_system.domain.QuizStatus;
 import com.shah.mini_quiz_system.domain.Submission;
 import com.shah.mini_quiz_system.dto.request.SubmissionRequest;
 import com.shah.mini_quiz_system.dto.response.SubmissionResponse;
+import com.shah.mini_quiz_system.exception.BusinessException;
 import com.shah.mini_quiz_system.exception.QuizNotFoundException;
 import com.shah.mini_quiz_system.exception.SubmissionNotFoundException;
 import com.shah.mini_quiz_system.mapper.SubmissionMapper;
@@ -101,5 +103,27 @@ public class SubmissionService {
         submission.setQuiz(quiz);
 
         return submissionMapper.toResponse(submission);
+    }
+
+    public SubmissionResponse startQuiz(Long quizId) {
+
+        Quiz quiz = quizRepository.findById(quizId)
+                .orElseThrow(() -> new QuizNotFoundException("Quiz Not Found With Id: " + quizId));
+
+        if (quiz.getStatus() != QuizStatus.PUBLISHED) {
+            throw new BusinessException("Quiz Not Available");
+
+        }
+
+        Submission submission = new Submission();
+
+        submission.setStartTime(LocalDateTime.now());
+        submission.setQuiz(quiz);
+
+        Submission savedSubmission = submissionRepository.save(submission);
+
+        return submissionMapper.toResponse(savedSubmission);
+
+
     }
 }
