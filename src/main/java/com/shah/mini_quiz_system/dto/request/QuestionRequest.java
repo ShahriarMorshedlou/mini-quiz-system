@@ -15,6 +15,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class QuestionRequest {
 
+    @Positive
+    private Long quizId;
+
     @NotBlank
     private String text;
 

@@ -27,7 +27,6 @@ public class Quiz {
     @Enumerated(EnumType.STRING)
     private QuizStatus status;
 
-
     @OneToMany(mappedBy = "quiz")
     private List<Question> questions;
 

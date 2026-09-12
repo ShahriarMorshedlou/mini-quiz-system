@@ -158,5 +158,20 @@ public class GlobalExceptionHandler {
                 .body(errorResponse);
     }
 
+    @ExceptionHandler(BusinessException.class)
+    ResponseEntity<ErrorResponse> handleBusinessException(
+            BusinessException ex) {
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                409,
+                ex.getMessage(),
+                null
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(errorResponse);
+    }
+
 
 }

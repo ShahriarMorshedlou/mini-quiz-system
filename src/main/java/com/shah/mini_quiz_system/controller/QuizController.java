@@ -1,6 +1,7 @@
 package com.shah.mini_quiz_system.controller;
 
 
+import com.shah.mini_quiz_system.domain.Quiz;
 import com.shah.mini_quiz_system.dto.request.QuizRequest;
 import com.shah.mini_quiz_system.dto.response.QuizResponse;
 import com.shah.mini_quiz_system.service.QuizService;
@@ -123,5 +124,16 @@ public class QuizController {
         return ResponseEntity
                 .noContent()
                 .build();
+    }
+
+    @PatchMapping("/{id}/publish")
+    public ResponseEntity<QuizResponse> publishQuiz(
+            @PathVariable
+            @Positive
+            Long id
+    ){
+        return ResponseEntity
+                .ok()
+                .body(quizService.publishQuiz(id));
     }
 }

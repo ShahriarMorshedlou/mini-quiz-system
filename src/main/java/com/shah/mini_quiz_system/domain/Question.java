@@ -55,4 +55,8 @@ public class Question {
     public void setScore(Integer score) {
         this.score = score;
     }
+
+    public void setQuiz(Quiz quiz) {
+        this.quiz = quiz;
+    }
 }
