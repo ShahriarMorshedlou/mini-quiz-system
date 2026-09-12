@@ -6,10 +6,7 @@ import com.shah.mini_quiz_system.domain.Question;
 import com.shah.mini_quiz_system.domain.Submission;
 import com.shah.mini_quiz_system.dto.request.AnswerRequest;
 import com.shah.mini_quiz_system.dto.response.AnswerResponse;
-import com.shah.mini_quiz_system.exception.AnswerNotFoundException;
-import com.shah.mini_quiz_system.exception.ChoiceNotFoundException;
-import com.shah.mini_quiz_system.exception.QuestionNotFoundException;
-import com.shah.mini_quiz_system.exception.SubmissionNotFoundException;
+import com.shah.mini_quiz_system.exception.*;
 import com.shah.mini_quiz_system.mapper.AnswerMapper;
 import com.shah.mini_quiz_system.repoditory.AnswerRepository;
 import com.shah.mini_quiz_system.repoditory.ChoiceRepository;
@@ -128,6 +125,56 @@ public class AnswerService {
         answer.setSubmission(submission);
 
         return answerMapper.toResponse(answer);
+    }
+
+    @Transactional
+    public AnswerResponse submitAnswer(Long submissionId, AnswerRequest request) {
+
+        Submission submission = submissionRepository.findById(submissionId)
+                .orElseThrow(() ->
+                        new SubmissionNotFoundException(
+                                "Not Found Submission With Id: " + submissionId
+                        ));
+
+        Question question = questionRepository.findById(request.getQuestionId())
+                .orElseThrow(() ->
+                        new QuestionNotFoundException(
+                                "Not Found Question With Id: " + request.getQuestionId()
+                        ));
+
+        Choice choice = choiceRepository.findById(request.getChoiceId())
+                .orElseThrow(() ->
+                        new ChoiceNotFoundException(
+                                "Not Found Choice With Id: " + request.getChoiceId()
+                        ));
+
+        if (!submission.getQuiz().getQuestions().contains(question)){
+            throw  new BusinessException("Question Does Not Belong To This Quiz");
+        }
+
+        if (!question.getChoices().contains(choice)){
+            throw  new BusinessException("Choice Does Not Belong To This Question");
+        }
+
+        boolean alreadyAnswered = submission.getAnswers()
+                .stream()
+                .anyMatch(answer -> answer.getQuestion().getId().equals(question.getId()));
+
+        if (alreadyAnswered) {
+            throw new BusinessException(
+                    "Question Has Already Been Answered In This Submission"
+            );
+        }
+
+        Answer answer = new Answer(
+                choice,
+                question,
+                submission
+        );
+
+        Answer savedAnswer = answerRepository.save(answer);
+
+        return answerMapper.toResponse(savedAnswer);
     }
 
 }
