@@ -122,6 +122,26 @@ public class SubmissionController {
     }
 
 
+    @Operation(
+            summary = "Finish a submission",
+            description = "Finishes a quiz submission and calculates the final score."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Submission finished successfully"
+    )
+    @ApiResponse(
+            responseCode = "400",
+            description = "Invalid submission ID"
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "Submission not found"
+    )
+    @ApiResponse(
+            responseCode = "409",
+            description = "Submission cannot be finished"
+    )
     @PostMapping("/{submissionId}/finish")
     public ResponseEntity<SubmissionResponse> finishSubmission(
             @PathVariable

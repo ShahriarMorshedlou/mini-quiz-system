@@ -131,6 +131,26 @@ public class QuizController {
                 .build();
     }
 
+    @Operation(
+            summary = "Publish a quiz",
+            description = "Publishes a draft quiz after validating its questions and choices."
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Quiz published successfully"
+    )
+    @ApiResponse(
+            responseCode = "400",
+            description = "Invalid quiz ID"
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "Quiz not found"
+    )
+    @ApiResponse(
+            responseCode = "409",
+            description = "Quiz cannot be published"
+    )
     @PatchMapping("/{id}/publish")
     public ResponseEntity<QuizResponse> publishQuiz(
             @PathVariable
@@ -142,6 +162,27 @@ public class QuizController {
                 .body(quizService.publishQuiz(id));
     }
 
+
+    @Operation(
+            summary = "Start a quiz",
+            description = "Creates a new submission for a published quiz."
+    )
+    @ApiResponse(
+            responseCode = "201",
+            description = "Quiz started successfully"
+    )
+    @ApiResponse(
+            responseCode = "400",
+            description = "Invalid quiz ID"
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "Quiz not found"
+    )
+    @ApiResponse(
+            responseCode = "409",
+            description = "Quiz is not available"
+    )
     @PostMapping("/{quizId}/submissions")
     public ResponseEntity<SubmissionResponse> startQuiz(
             @PathVariable @Positive Long quizId) {
