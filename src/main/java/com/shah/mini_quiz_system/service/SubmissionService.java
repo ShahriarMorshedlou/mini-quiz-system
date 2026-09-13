@@ -1,5 +1,6 @@
 package com.shah.mini_quiz_system.service;
 
+import com.shah.mini_quiz_system.domain.Answer;
 import com.shah.mini_quiz_system.domain.Quiz;
 import com.shah.mini_quiz_system.domain.QuizStatus;
 import com.shah.mini_quiz_system.domain.Submission;
@@ -123,6 +124,62 @@ public class SubmissionService {
         Submission savedSubmission = submissionRepository.save(submission);
 
         return submissionMapper.toResponse(savedSubmission);
+
+
+    }
+
+
+    public Integer calculateScore(Submission submission) {
+
+        Integer score = 0;
+
+        for (Answer answer : submission.getAnswers()) {
+
+            if (answer.getChoice().isCorrect()) {
+
+                score += answer.getQuestion().getScore();
+            }
+        }
+        return score;
+
+    }
+
+    @Transactional
+    public SubmissionResponse finishSubmission(Long submissionId) {
+
+        Submission submission = submissionRepository.findById(submissionId)
+                .orElseThrow(() -> new SubmissionNotFoundException("Submission Not Found With Id: " + submissionId));
+
+        if (submission.getEndTime() != null) {
+            throw new BusinessException("Submission has already been finished");
+        }
+
+        LocalDateTime deadline = submission.getStartTime()
+                .plusMinutes(submission.getQuiz().getDuration());
+
+        if (LocalDateTime.now().isAfter(deadline)) {
+            throw new BusinessException("Submission time limit has been exceeded");
+        }
+
+
+        boolean hasUnansweredQuestion = submission.getQuiz().getQuestions()
+                .stream()
+                .anyMatch(question ->
+                        submission.getAnswers().stream()
+                                .noneMatch(answer ->
+                                        answer.getQuestion().getId().equals(question.getId())
+                                )
+                );
+        if (hasUnansweredQuestion) {
+            throw new BusinessException("All Questions Must Be Answered Before Finishing");
+        }
+
+        submission.setEndTime(LocalDateTime.now());
+
+        Integer score = calculateScore(submission);
+        submission.setScore(score);
+
+        return submissionMapper.toResponse(submission);
 
 
     }

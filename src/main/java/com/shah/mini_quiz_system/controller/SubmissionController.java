@@ -120,5 +120,18 @@ public class SubmissionController {
                 .status(HttpStatus.CREATED)
                 .body(answerService.submitAnswer(submissionId, request));
     }
+
+
+    @PostMapping("/{submissionId}/finish")
+    public ResponseEntity<SubmissionResponse> finishSubmission(
+            @PathVariable
+            @Positive
+            Long submissionId
+    ){
+
+        return ResponseEntity
+                .ok()
+                .body(submissionService.finishSubmission(submissionId));
+    }
 }
 
