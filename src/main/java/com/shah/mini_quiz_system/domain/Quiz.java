@@ -58,6 +58,10 @@ public class Quiz {
     public void setStatus(QuizStatus status) {
         this.status = status;
     }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
+    }
 }
 
 
