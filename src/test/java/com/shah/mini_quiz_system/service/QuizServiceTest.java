@@ -1,9 +1,6 @@
 package com.shah.mini_quiz_system.service;
 
-import com.shah.mini_quiz_system.domain.Choice;
-import com.shah.mini_quiz_system.domain.Question;
-import com.shah.mini_quiz_system.domain.Quiz;
-import com.shah.mini_quiz_system.domain.QuizStatus;
+import com.shah.mini_quiz_system.domain.*;
 import com.shah.mini_quiz_system.dto.response.QuizResponse;
 import com.shah.mini_quiz_system.exception.BusinessException;
 import com.shah.mini_quiz_system.exception.QuizNotFoundException;
