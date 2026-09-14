@@ -15,10 +15,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -95,5 +96,35 @@ public class SubmissionServiceTest {
                 BusinessException.class,
                 () -> submissionService.startQuiz(1L)
         );
+    }
+
+    @Test
+    void finishSubmission_shouldFinishSubmission_whenValid() {
+
+        // Arrange
+        Quiz quiz = new Quiz();
+        quiz.setDuration(10);
+        quiz.setQuestions(List.of());
+
+        Submission submission = new Submission();
+        submission.setQuiz(quiz);
+        submission.setStartTime(LocalDateTime.now());
+        submission.setAnswers(List.of());
+
+        when(submissionRepository.findById(1L))
+                .thenReturn(Optional.of(submission));
+
+        SubmissionResponse expectedResponse = new SubmissionResponse();
+
+        when(submissionMapper.toResponse(submission))
+                .thenReturn(expectedResponse);
+
+        // Act
+        SubmissionResponse response =
+                submissionService.finishSubmission(1L);
+
+        // Assert
+        assertEquals(expectedResponse, response);
+        assertNotNull(submission.getEndTime());
     }
 }
