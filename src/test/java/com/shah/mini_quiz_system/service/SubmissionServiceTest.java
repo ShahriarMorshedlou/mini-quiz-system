@@ -6,6 +6,7 @@ import com.shah.mini_quiz_system.domain.Submission;
 import com.shah.mini_quiz_system.dto.response.SubmissionResponse;
 import com.shah.mini_quiz_system.exception.BusinessException;
 import com.shah.mini_quiz_system.exception.QuizNotFoundException;
+import com.shah.mini_quiz_system.exception.SubmissionNotFoundException;
 import com.shah.mini_quiz_system.mapper.SubmissionMapper;
 import com.shah.mini_quiz_system.repoditory.QuizRepository;
 import com.shah.mini_quiz_system.repoditory.SubmissionRepository;
@@ -126,5 +127,19 @@ public class SubmissionServiceTest {
         // Assert
         assertEquals(expectedResponse, response);
         assertNotNull(submission.getEndTime());
+    }
+
+    @Test
+    void finishSubmission_ifSubmissionNotFound_throwException() {
+
+        // Arrange
+        when(submissionRepository.findById(1L))
+                .thenReturn(Optional.empty());
+
+        // Act + Assert
+        assertThrows(
+                SubmissionNotFoundException.class,
+                () -> submissionService.finishSubmission(1L)
+        );
     }
 }
