@@ -4,6 +4,8 @@ import com.shah.mini_quiz_system.domain.Quiz;
 import com.shah.mini_quiz_system.domain.QuizStatus;
 import com.shah.mini_quiz_system.domain.Submission;
 import com.shah.mini_quiz_system.dto.response.SubmissionResponse;
+import com.shah.mini_quiz_system.exception.BusinessException;
+import com.shah.mini_quiz_system.exception.QuizNotFoundException;
 import com.shah.mini_quiz_system.mapper.SubmissionMapper;
 import com.shah.mini_quiz_system.repoditory.QuizRepository;
 import com.shah.mini_quiz_system.repoditory.SubmissionRepository;
@@ -16,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -59,5 +62,21 @@ public class SubmissionServiceTest {
 
         // Assert
         assertEquals(expectedResponse, response);
+    }
+
+    @Test
+    void startQuiz_ifNotFoundQuiz_returnException() {
+        // Arrange
+
+        when(quizRepository.findById(1L))
+                .thenReturn(Optional.empty());
+
+        // Act + Assert
+
+        assertThrows(
+                QuizNotFoundException.class,
+        () -> submissionService.startQuiz(1L)
+        );
+
     }
 }
