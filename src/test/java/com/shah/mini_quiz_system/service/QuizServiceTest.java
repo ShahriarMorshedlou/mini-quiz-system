@@ -70,4 +70,22 @@ public class QuizServiceTest {
 
     }
 
+    @Test
+    void publishQuiz_ifNotFoundQuiz_returnException(){
+
+        //Arrange
+
+        when(quizRepository.findById(1L))
+                .thenReturn(Optional.empty());
+
+
+        //Act
+
+        //Assert
+        assertThrows(
+                QuizNotFoundException.class,
+                () -> quizService.publishQuiz(1L)
+        );
+    }
+
 }
