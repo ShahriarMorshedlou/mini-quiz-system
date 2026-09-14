@@ -123,4 +123,25 @@ public class QuizServiceTest {
                 () -> quizService.publishQuiz(1L)
         );
     }
+
+    @Test
+    void publishQuiz_ifQuestionHasLessThanTwoChoices_throwException(){
+        //Arrange
+        Quiz quiz = new Quiz();
+        quiz.setStatus(QuizStatus.DRAFT);
+        Question question = new Question();
+        Choice choice = new Choice();
+        question.setChoices(List.of(choice));
+        quiz.setQuestions(List.of(question));
+
+        when(quizRepository.findById(1L))
+                .thenReturn(Optional.of(quiz));
+
+
+        // Act + Assert
+        assertThrows(
+                BusinessException.class,
+                () -> quizService.publishQuiz(1L)
+        );
+    }
 }
