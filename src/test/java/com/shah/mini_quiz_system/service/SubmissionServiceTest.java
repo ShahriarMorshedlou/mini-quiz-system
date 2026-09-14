@@ -79,4 +79,21 @@ public class SubmissionServiceTest {
         );
 
     }
+
+    @Test
+    void startQuiz_ifQuizIsNotPublished_throwException() {
+
+        // Arrange
+        Quiz quiz = new Quiz();
+        quiz.setStatus(QuizStatus.DRAFT);
+
+        when(quizRepository.findById(1L))
+                .thenReturn(Optional.of(quiz));
+
+        // Act + Assert
+        assertThrows(
+                BusinessException.class,
+                () -> submissionService.startQuiz(1L)
+        );
+    }
 }
