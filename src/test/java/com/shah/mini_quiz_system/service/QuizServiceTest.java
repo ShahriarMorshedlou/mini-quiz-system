@@ -5,6 +5,7 @@ import com.shah.mini_quiz_system.domain.Question;
 import com.shah.mini_quiz_system.domain.Quiz;
 import com.shah.mini_quiz_system.domain.QuizStatus;
 import com.shah.mini_quiz_system.dto.response.QuizResponse;
+import com.shah.mini_quiz_system.exception.BusinessException;
 import com.shah.mini_quiz_system.exception.QuizNotFoundException;
 import com.shah.mini_quiz_system.mapper.QuizMapper;
 import com.shah.mini_quiz_system.repoditory.ChoiceRepository;
@@ -88,4 +89,20 @@ public class QuizServiceTest {
         );
     }
 
+    @Test
+    void publishQuiz_ifQuizIsNotDraft_throwException() {
+
+        // Arrange
+        Quiz quiz = new Quiz();
+        quiz.setStatus(QuizStatus.PUBLISHED);
+
+        when(quizRepository.findById(1L))
+                .thenReturn(Optional.of(quiz));
+
+        // Act + Assert
+        assertThrows(
+                BusinessException.class,
+                () -> quizService.publishQuiz(1L)
+        );
+    }
 }
