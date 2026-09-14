@@ -144,4 +144,32 @@ public class QuizServiceTest {
                 () -> quizService.publishQuiz(1L)
         );
     }
+
+    @Test
+    void publishQuiz_ifQuestionDoesNotHaveExactlyOneCorrectChoice_throwException() {
+
+        // Arrange
+        Quiz quiz = new Quiz();
+        quiz.setStatus(QuizStatus.DRAFT);
+
+        Question question = new Question();
+
+        Choice choice1 = new Choice();
+        choice1.setCorrect(false);
+
+        Choice choice2 = new Choice();
+        choice2.setCorrect(false);
+
+        question.setChoices(List.of(choice1, choice2));
+        quiz.setQuestions(List.of(question));
+
+        when(quizRepository.findById(1L))
+                .thenReturn(Optional.of(quiz));
+
+        // Act + Assert
+        assertThrows(
+                BusinessException.class,
+                () -> quizService.publishQuiz(1L)
+        );
+    }
 }
