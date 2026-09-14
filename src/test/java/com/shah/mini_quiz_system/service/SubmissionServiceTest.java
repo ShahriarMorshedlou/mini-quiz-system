@@ -142,4 +142,21 @@ public class SubmissionServiceTest {
                 () -> submissionService.finishSubmission(1L)
         );
     }
+
+    @Test
+    void finishSubmission_ifSubmissionAlreadyFinished_throwException() {
+
+        // Arrange
+        Submission submission = new Submission();
+        submission.setEndTime(LocalDateTime.now());
+
+        when(submissionRepository.findById(1L))
+                .thenReturn(Optional.of(submission));
+
+        // Act + Assert
+        assertThrows(
+                BusinessException.class,
+                () -> submissionService.finishSubmission(1L)
+        );
+    }
 }
