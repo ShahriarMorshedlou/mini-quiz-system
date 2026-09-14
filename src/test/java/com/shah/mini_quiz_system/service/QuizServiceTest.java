@@ -105,4 +105,22 @@ public class QuizServiceTest {
                 () -> quizService.publishQuiz(1L)
         );
     }
+
+    @Test
+    void publishQuiz_ifQuizHasNoQuestions_throwException() {
+
+        // Arrange
+        Quiz quiz = new Quiz();
+        quiz.setStatus(QuizStatus.DRAFT);
+        quiz.setQuestions(List.of());
+
+        when(quizRepository.findById(1L))
+                .thenReturn(Optional.of(quiz));
+
+        // Act + Assert
+        assertThrows(
+                BusinessException.class,
+                () -> quizService.publishQuiz(1L)
+        );
+    }
 }
