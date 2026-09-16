@@ -1,7 +1,9 @@
 package com.shah.mini_quiz_system.controller;
 
 
+import com.shah.mini_quiz_system.dto.request.LoginRequest;
 import com.shah.mini_quiz_system.dto.request.RegisterRequest;
+import com.shah.mini_quiz_system.dto.response.LoginResponse;
 import com.shah.mini_quiz_system.dto.response.RegisterResponse;
 import com.shah.mini_quiz_system.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,7 +26,6 @@ public class AuthController {
     private final AuthService authService;
 
 
-
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
@@ -35,7 +36,7 @@ public class AuthController {
             responseCode = "201",
             description = "User registered successfully"
     )
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(
             @RequestBody
             @Valid
@@ -44,5 +45,20 @@ public class AuthController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(authService.register(request));
+    }
+
+    @Operation(summary = "Login user")
+    @ApiResponse(
+            responseCode = "200",
+            description = "User authenticated successfully"
+    )
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(
+            @Valid
+            @RequestBody
+            LoginRequest request
+    ) {
+        return ResponseEntity
+                .ok(authService.login(request));
     }
 }
