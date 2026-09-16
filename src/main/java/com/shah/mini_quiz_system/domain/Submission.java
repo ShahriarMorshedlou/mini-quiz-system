@@ -34,6 +34,10 @@ public class Submission {
     @OneToMany(mappedBy = "submission")
     private List<Answer>answers;
 
+    @ManyToOne
+    @JoinColumn(name = "student_id")
+    private User user;
+
     public void setQuiz(Quiz quiz) {
         this.quiz = quiz;
     }

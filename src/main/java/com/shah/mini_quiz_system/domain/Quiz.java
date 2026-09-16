@@ -33,6 +33,10 @@ public class Quiz {
     @OneToMany(mappedBy = "quiz")
     private List<Submission> submissions;
 
+    @ManyToOne
+    @JoinColumn(name = "teacher_id")
+    private User user;
+
 
     @Builder
     public Quiz(String title, String description, Integer duration, QuizStatus status) {
