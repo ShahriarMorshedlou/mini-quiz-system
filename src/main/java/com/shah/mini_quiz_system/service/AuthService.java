@@ -11,6 +11,9 @@ import com.shah.mini_quiz_system.mapper.LoginMapper;
 import com.shah.mini_quiz_system.mapper.RegisterMapper;
 import com.shah.mini_quiz_system.repoditory.UserRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +24,17 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final RegisterMapper registerMapper;
     private final LoginMapper loginMapper;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
 
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, RegisterMapper registerMapper, LoginMapper loginMapper) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, RegisterMapper registerMapper, LoginMapper loginMapper, JwtService jwtService, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.registerMapper = registerMapper;
         this.loginMapper = loginMapper;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
     }
 
     @Transactional
@@ -55,19 +62,23 @@ public class AuthService {
 
     public LoginResponse login(LoginRequest request) {
 
-        User user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new BusinessException("Username or password is incorrect"));
+        Authentication authentication =
+                authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                request.getUsername(),
+                                request.getPassword()
+                        )
+                );
 
-        if (!passwordEncoder.matches(
-                request.getPassword(),
-                user.getPassword()
+        CustomUserDetails userDetails =
+                (CustomUserDetails) authentication.getPrincipal();
 
-        )) {
-            throw new BusinessException("Username or password is incorrect");
-        }
+        User user = userDetails.getUser();
 
-        return loginMapper.toResponse(user);
+        String token = jwtService.generateToken(
+                user.getUsername()
+        );
 
-
+        return loginMapper.toResponse(user, token);
     }
 }
