@@ -10,10 +10,12 @@ import com.shah.mini_quiz_system.service.QuizService;
 import com.shah.mini_quiz_system.service.SubmissionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,10 +37,12 @@ public class QuizController {
     @Operation(
             summary = "Create a new quiz"
     )
+    @SecurityRequirement(name = "bearerAuth")
     @ApiResponse(
             responseCode = "201",
             description = "Quiz created successfully"
     )
+    @PreAuthorize("hasRole('TEACHER')")
     @PostMapping
     public ResponseEntity<QuizResponse> createQuiz(
             @RequestBody
