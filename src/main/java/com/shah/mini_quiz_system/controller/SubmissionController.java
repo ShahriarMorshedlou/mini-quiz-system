@@ -14,6 +14,7 @@ import jakarta.validation.constraints.Positive;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +34,7 @@ public class SubmissionController {
         this.answerService = answerService;
     }
 
-    @PostMapping
+    @PostMapping("/create")
     @Operation(
             summary = "Create submission"
     )
@@ -41,6 +42,7 @@ public class SubmissionController {
             responseCode = "201",
             description = "Submission created successfully"
     )
+    @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<SubmissionResponse> createSubmission(
             @RequestBody @Valid SubmissionRequest request
     ) {
