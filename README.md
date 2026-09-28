@@ -244,3 +244,232 @@ The existing Phase 1 business logic will remain the foundation of the system whi
 ## Project Goal
 
 The goal of this project is to practice building a real-world Spring Boot backend with a focus on **business logic, JPA relationships, validation, exception handling, testing, and security**.
+
+# Mini Quiz System — Phase 2
+
+Phase 2 extends the project from a core quiz backend into a secured, containerized backend system. The main focus of this phase was **Authentication, Authorization, Spring Security, JWT, and Docker**.
+
+---
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Authentication](#authentication)
+- [Roles & Authorization](#roles--authorization)
+- [Spring Security](#spring-security)
+- [JWT Authentication Flow](#jwt-authentication-flow)
+- [Docker](#docker)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Learning Experience](#learning-experience)
+- [Project Status](#project-status)
+- [Next Steps](#next-steps)
+
+---
+
+## Overview
+
+Building on Phase 1 (core quiz system), Phase 2 adds a full authentication and authorization layer using Spring Security and JWT, and containerizes the application with Docker alongside a PostgreSQL database.
+
+---
+
+## Authentication
+
+- User Registration
+- User Login
+- User Logout
+- Password Hashing with BCrypt
+- JWT-based Authentication
+
+## Roles & Authorization
+
+The system supports three roles:
+
+- **Admin**
+- **Teacher**
+- **Student**
+
+Role-Based Access Control (RBAC) restricts endpoints based on the authenticated user's role:
+
+| Role    | Example Permissions              |
+|---------|-----------------------------------|
+| Admin   | Manage users                      |
+| Teacher | Create/manage quizzes             |
+| Student | Submit quiz answers               |
+
+---
+
+## Spring Security
+
+Core components implemented and practiced in this phase:
+
+- Security Filter Chain
+- `AuthenticationManager`
+- `UserDetails` / `UserDetailsService`
+- `PasswordEncoder` (BCrypt)
+- Custom JWT Authentication Filter
+- `SecurityContext`
+- Role-based endpoint authorization
+
+### JWT Authentication Flow
+
+```text
+Login Request
+      │
+      ▼
+AuthenticationManager
+      │
+      ▼
+UserDetailsService ──► UserRepository ──► User
+      │
+      ▼
+Authentication Object
+      │
+      ▼
+JwtService ──► JWT Token
+      │
+      ▼
+Authorization Header (Bearer Token)
+      │
+      ▼
+JwtAuthenticationFilter
+      │
+      ▼
+SecurityContext
+      │
+      ▼
+Protected REST Endpoint
+```
+
+---
+
+## Docker
+
+The application was containerized together with PostgreSQL.
+
+**Implemented and practiced:**
+
+- Dockerfile
+- Docker Images & Containers
+- Port Mapping
+- Environment Variables
+- Docker Network (manual container-to-container communication)
+- PostgreSQL Container with Persistent Volume
+- Docker CLI workflow
+
+### Docker Architecture
+
+```text
+Spring Boot Application Container
+            │
+            │  (Docker Network)
+            ▼
+    mini-quiz-postgres Container
+            │
+            ▼
+    PostgreSQL Persistent Volume
+```
+
+### Build & Containerization Flow
+```text
+Source Code → Maven Build → JAR → Docker Image → Docker Container
+```
+
+### Why Docker CLI Instead of Docker Compose?
+
+The application and PostgreSQL container were connected **manually** using the Docker CLI rather than Docker Compose. This was an intentional choice to first understand the underlying concepts — images, containers, networks, volumes, and environment variables — before moving to higher-level orchestration tools. Docker Compose is planned as the next step.
+
+---
+
+## Tech Stack
+
+**Backend**
+Java · Spring Boot · Spring MVC · Spring Data JPA · Hibernate · Spring Security · JWT · Bean Validation
+
+**Database**
+PostgreSQL
+
+**Documentation & Testing**
+OpenAPI / Swagger · JUnit 5 · Postman
+
+**DevOps / Tools**
+Maven · Docker · Docker CLI · Git · GitHub
+
+---
+
+## Project Structure
+
+```text
+mini-quiz-system
+├── src
+│   ├── main
+│   │   ├── java/com/shah/mini_quiz_system
+│   │   │   ├── config          # Security & app configuration
+│   │   │   ├── controller      # REST controllers
+│   │   │   ├── domain          # Entities
+│   │   │   ├── dto             # Request/response DTOs
+│   │   │   ├── exception       # Custom exceptions & global handler
+│   │   │   ├── filter          # JWT authentication filter
+│   │   │   ├── mapper          # MapStruct mappers
+│   │   │   ├── repository      # Spring Data JPA repositories
+│   │   │   ├── service         # Business logic
+│   │   │   └── MiniQuizSystemApplication.java
+│   │   └── resources
+│   │       ├── static
+│   │       ├── templates
+│   │       └── application.yaml
+│   └── test
+├── Dockerfile
+├── .gitignore
+├── .gitattributes
+└── pom.xml
+```
+
+### Request Flow
+
+```text
+Client
+  │
+  ▼
+REST API (Controller)
+  │
+  ▼
+Spring Security (Filter Chain + JWT Filter)
+  │
+  ▼
+Service (Business Logic)
+  │
+  ▼
+Repository (JPA)
+  │
+  ▼
+PostgreSQL
+```
+
+---
+
+## Learning Experience
+
+This phase was my first practical implementation of several backend concepts I had previously only studied conceptually.
+
+**Spring Security**
+My first hands-on implementation of `AuthenticationManager`, `UserDetailsService`, `SecurityContext`, the Security Filter Chain, and a custom JWT filter. The focus wasn't just making login work — it was understanding how these components interact inside Spring Security's architecture.
+
+**Docker**
+Containerized the application manually (without Compose) to understand the relationship between the app container, the database container, the Docker network, persistent storage, and environment variables — before relying on higher-level tooling.
+
+---
+
+## Project Status
+
+| Phase | Description | Status |
+|-------|-------------|--------|
+| Phase 1 | Core Quiz System | ✅ Completed |
+| Phase 2 | Security & Docker | ✅ Completed |
+
+## Next Steps
+
+- Docker Compose
+- Linux fundamentals
+- GitHub Actions (CI/CD)
+- Deployment to a Linux server
